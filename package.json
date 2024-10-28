@@ -1,0 +1,28 @@
+{
+  "name": "full-stack-webrtc",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "start:client": "vite",
+    "start:server": "tsx --env-file=.env src/server.ts"
+  },
+  "optionalDependencies": {
+    "raspi-io": "11.0.0"
+  },
+  "devDependencies": {
+    "@types/johnny-five": "^2.1.11",
+    "@types/node": "20",
+    "tsx": "^4.19.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.8"
+  },
+  "dependencies": {
+    "@roamhq/wrtc": "^0.8.0",
+    "johnny-five": "^2.1.0",
+    "json-rpc-2.0": "^1.7.0"
+  }
+}

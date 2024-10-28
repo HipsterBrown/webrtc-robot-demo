@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebRTC Robot Control Demo</title>
+</head>
+
+<body>
+  <header>
+    <h1>Remote Control Robot</h1>
+    <p>Blink an LED in Real-time!</p>
+  </header>
+  <div class="controlbox">
+    <h2>Controls:</h2>
+    <form id="connectForm" data-action="connect" method="POST">
+      <button id="connectButton" name="connectButton" class="buttonleft">
+        Connect
+      </button>
+    </form>
+    <form id="blinkForm" data-action="blink" method="POST">
+      <button id="blinkButton" name="blinkButton" class="buttonright" disabled>
+        Blink LED
+      </button>
+    </form>
+  </div>
+  <div class="messagebox" id="receivebox">
+    <h2>Logs:</h2>
+  </div>
+  <script type="module" src="/src/client.ts"></script>
+</body>
+
+</html>

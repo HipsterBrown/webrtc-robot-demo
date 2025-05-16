@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebRTC Robot Control Demo</title>
+  <style>
+    /* Add styles for video element and status indicator */
+    #videoElement {
+      width: 100%;
+      max-width: 640px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f0f0f0;
+      margin-bottom: 20px;
+    }
+
+    #connectionStatus {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .connected {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .connecting {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .disconnected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Remote Control Robot</h1>
+    <p>View and control your robot in real-time!</p>
+  </header>
+
+  <div id="connectionStatus" class="disconnected">Disconnected</div>
+
+  <!-- Video display element -->
+  <video id="videoElement" autoplay playsinline
+    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='480' viewBox='0 0 640 480'%3E%3Crect width='640' height='480' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' fill='%23999' dominant-baseline='middle'%3EWaiting for video...%3C/text%3E%3C/svg%3E"></video>
+
+  <div class="controlbox">
+    <h2>Controls:</h2>
+    <form id="connectForm" data-action="connect" method="POST">
+      <button id="connectButton" name="connectButton" class="buttonleft">
+        Connect
+      </button>
+    </form>
+    <form id="blinkForm" data-action="blink" method="POST">
+      <button id="blinkButton" name="blinkButton" class="buttonright" disabled>
+        Blink LED
+      </button>
+    </form>
+  </div>
+  <div class="messagebox" id="receivebox">
+    <h2>Logs:</h2>
+  </div>
+  <script type="module" src="/src/cam-client.ts"></script>
+</body>
+
+</html>

@@ -7,11 +7,12 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "start:client": "vite",
-    "start:server": "tsx --env-file=.env src/server.ts"
+    "start:server": "tsx --env-file=.env src/server.ts",
+    "start:cam-server": "tsx --env-file=.env src/cam-server.ts"
   },
   "optionalDependencies": {
-    "raspi-io": "11.0.0",
-    "@roamhq/wrtc-linux-arm64": "^0.9.0"
+    "@roamhq/wrtc-linux-arm64": "^0.9.0",
+    "raspi-io": "11.0.0"
   },
   "devDependencies": {
     "@types/johnny-five": "^2.1.11",
@@ -23,6 +24,7 @@
   "dependencies": {
     "@roamhq/wrtc": "^0.9.0",
     "johnny-five": "^2.1.0",
-    "json-rpc-2.0": "^1.7.0"
+    "json-rpc-2.0": "^1.7.0",
+    "pako": "^2.1.0"
   }
 }

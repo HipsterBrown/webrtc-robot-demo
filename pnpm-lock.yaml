@@ -17,6 +17,9 @@ importers:
       json-rpc-2.0:
         specifier: ^1.7.0
         version: 1.7.0
+      pako:
+        specifier: ^2.1.0
+        version: 2.1.0
     optionalDependencies:
       '@roamhq/wrtc-linux-arm64':
         specifier: ^0.9.0
@@ -719,6 +722,9 @@ packages:
 
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
+
+  pako@2.1.0:
+    resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
 
   picocolors@1.1.0:
     resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
@@ -1511,6 +1517,8 @@ snapshots:
     dependencies:
       wrappy: 1.0.2
     optional: true
+
+  pako@2.1.0: {}
 
   picocolors@1.1.0: {}
 

@@ -23,7 +23,7 @@ Talk slides: https://www.canva.com/design/DAGUNkorRWU/86XFCkAuDHVtmn-7ulxGAg/vie
 - [3mm LED of any color](https://www.adafruit.com/product/4202)
 - [Jumper wires for connecting LED to the Raspberry Pi's GPIO pins](https://www.adafruit.com/product/1950)
 
-**Software Setup:**
+**Hardware Setup:**
 
 1. With two female-to-female jumper wires, connect one end of each wire to the legs of the LED. 
 1. Connect the other end of one wire to a [Ground pin](https://pinout.xyz/pinout/ground) on the Raspberry Pi. 

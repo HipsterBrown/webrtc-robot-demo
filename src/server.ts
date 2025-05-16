@@ -1,11 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import { RTCPeerConnection } from '@roamhq/wrtc';
 import { JSONRPCServer, isJSONRPCRequest, isJSONRPCRequests } from 'json-rpc-2.0';
 import * as five from 'johnny-five';
 // @ts-expect-error dependency only available on Raspberry Pi
 import { RaspiIO } from 'raspi-io';
 import { Notifier } from './lib/ntfy-signaling';
 import type { RPCServer } from './lib/rpc';
+
+const { RTCPeerConnection } = require('@roamhq/wrtc');
 
 function prepareMessage(message: Record<string, unknown>) {
   return btoa(JSON.stringify(message));
@@ -44,10 +45,11 @@ async function main() {
       },
     ],
   });
-  const notifier = new Notifier({ server: process.env.VITE_NTFY_SERVER, defaultTopic: process.env.VITE_NTFY_TOPIC });
+  const defaultTopic = process.env.VITE_NTFY_TOPIC ?? 'wrtc'
+  const notifier = new Notifier({ server: process.env.VITE_NTFY_SERVER, defaultTopic });
   notifier.addEventListener('close', console.log.bind(console, 'Notifications closed'));
   notifier.addEventListener('message', async (event: CustomEvent) => {
-    if (event.detail.topic === 'wrtc') {
+    if (event.detail.topic === defaultTopic) {
       try {
         const message = parseMessage(event.detail.message);
         if (message.clientId === clientId) return;

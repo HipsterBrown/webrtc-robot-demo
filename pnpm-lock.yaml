@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@roamhq/wrtc':
-        specifier: ^0.8.0
-        version: 0.8.0
+        specifier: ^0.9.0
+        version: 0.9.0
       johnny-five:
         specifier: ^2.1.0
         version: 2.1.0
@@ -18,6 +18,9 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
     optionalDependencies:
+      '@roamhq/wrtc-linux-arm64':
+        specifier: ^0.9.0
+        version: 0.9.0
       raspi-io:
         specifier: 11.0.0
         version: 11.0.0
@@ -322,33 +325,33 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@roamhq/wrtc-darwin-arm64@0.8.0':
-    resolution: {integrity: sha512-OtV2KWO7zOG3L8TF3KCt9aucynVCD/ww2xeXXgg+FLkya3ca0uzehN8EQJ3BL4tkInksbFJ2ssyu9cehfJ3ZuA==}
+  '@roamhq/wrtc-darwin-arm64@0.9.0':
+    resolution: {integrity: sha512-bVbyI3Xm3ZlTPYnKz7gnLkxt1kZ8ZMW5QBwJpF/kS227O71pqUhicX/V5RRGqUmaER3JtXt0naR86ZPDfgTQBg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@roamhq/wrtc-darwin-x64@0.8.0':
-    resolution: {integrity: sha512-VY7Vzt/SDDDCpW//h8GW9bOZrOr8gWXPZVD9473ypl4jyBIoO57yyLbHzd1G0vBUkS6szsHlQCz1WwpI30YL+g==}
+  '@roamhq/wrtc-darwin-x64@0.9.0':
+    resolution: {integrity: sha512-99FFbFcIIqRR+H4ylkQgbgM8L5dx72hP5/GeJHB2h2f62Mb51bi30KokyOeBKH3X5R8bNi8LKnf7tV8d4kaGlA==}
     cpu: [x64]
     os: [darwin]
 
-  '@roamhq/wrtc-linux-arm64@0.8.1':
-    resolution: {integrity: sha512-FBJLLazlWkGQUXaokC/rTbrUQbb0CNFYry52fZGstufrGLTWu+g4HcwXdVvxh1tnVtVMvkQGk+mlOL52sCxw0A==}
+  '@roamhq/wrtc-linux-arm64@0.9.0':
+    resolution: {integrity: sha512-JUtrPFGvp+/5YWz9L5eW9e4XPQ5lRFQR5/BlGQJQOutrkBYqvME8NvAHKhyNWm+b3Sgk0w6yZ1g1nSttPHFY6g==}
     cpu: [arm64]
     os: [linux]
 
-  '@roamhq/wrtc-linux-x64@0.8.1':
-    resolution: {integrity: sha512-I9oWG7b4uvWO1IOR/aF34n+ID6TKVuSs0jd19h5KdhfRtw7FFh9xxuwN9rONPxLVa6fS0q+MCZgAf8Scz89L8Q==}
+  '@roamhq/wrtc-linux-x64@0.9.0':
+    resolution: {integrity: sha512-ve6pIqeadUn6Jypb73A76041zdvGg/Bl0JU+T2+K8Zjw4aASebBFF4NX213dAS5viWUcNULzKV/s2PcpLDCyXQ==}
     cpu: [x64]
     os: [linux]
 
-  '@roamhq/wrtc-win32-x64@0.8.0':
-    resolution: {integrity: sha512-R2fxl41BLWPiP4eaTHGLzbbVvRjx1mV/OsgINCvawO7Hwz5Zx9I45+Fhrw3hd4n5amIeSG9VIF7Kz8eeTFXTGQ==}
+  '@roamhq/wrtc-win32-x64@0.9.0':
+    resolution: {integrity: sha512-QoVe5KKP1IjIRGDZfMUJV0OgTCK3noc79P2uuLeR5iJqf+bLcgyNr818ljB7frxPMSZNwWC5eVQTGmclrIIOIg==}
     cpu: [x64]
     os: [win32]
 
-  '@roamhq/wrtc@0.8.0':
-    resolution: {integrity: sha512-C0V/nqc4/2xzORI5qa4mIeN/8UO3ywN1kInrJ9u6GljFx0D18JMUJEqe8yYHa61RrEeoWN3PKdW++k8TocSx/A==}
+  '@roamhq/wrtc@0.9.0':
+    resolution: {integrity: sha512-b61ld6g0hHDh/K1y0Lckxg5HBunaESNW6N23ewviW5IvwBfZiIYPUxQFWxqprMTr/6ODHmw5B2xvqvLyuAL5Xw==}
 
   '@rollup/rollup-android-arm-eabi@4.24.0':
     resolution: {integrity: sha512-Q6HJd7Y6xdB48x8ZNVDOqsbh2uByBhgK8PiQgPhwkIw/HC/YX5Ghq2mQY5sRMZWHb3VsFkWooUVOZHKr7DmDIA==}
@@ -746,12 +749,10 @@ packages:
   raspi-gpio@6.2.2:
     resolution: {integrity: sha512-3K8wicffH7HhQ9crGNi+BWUO86YVSGBF70bT7qGWPoBSy1QbNP1/bkLqqkZrNXPi/54PiHiz+Tf9e2YbqwoBig==}
     engines: {node: '>= 6.4.0'}
-    cpu: [arm, arm64]
 
   raspi-i2c@6.2.4:
     resolution: {integrity: sha512-mjWYpjr2h8ZqYJFlUTykHIXZmSwgF+VnT+NUvGbpS8J7GikWr4ljkrhUYmxZaiztetLREhNpcRoEpTW+5jKH6A==}
     engines: {node: '>= 6.4.0'}
-    cpu: [arm, arm64]
 
   raspi-io@11.0.0:
     resolution: {integrity: sha512-2KEUtuRHollQXZ6SydxNFCltJJZvxIaT+4FmivS243r3VEFc/pzBRrALuM/38QDyfigpKSKWRnLXeSuXlm8uzw==}
@@ -761,22 +762,18 @@ packages:
   raspi-led@2.1.2:
     resolution: {integrity: sha512-sWkdp938+5SkmupMHCuy7eyE52Lx3xJgn9Bw8SXOOtS7RV3KE1xnPrGgYwNN77HpIBBcGK47hrLLVhMnkLa6mQ==}
     engines: {node: '>= 6.0.0'}
-    cpu: [arm, arm64]
 
   raspi-peripheral@3.0.4:
     resolution: {integrity: sha512-IG/s6Y4isbTLUmuMPc3TtCLT2jm2ist66p2HmfOBalQ47Z6RKhLJsHj49c0e/aIZ7s45JGeAm6A9iO1Q/rMdVg==}
     engines: {node: '>= 6.0.0'}
-    cpu: [arm, arm64]
 
   raspi-serial@6.0.0:
     resolution: {integrity: sha512-Aid3uHj7NQEShu6uHZanI7zOSeQljNdkR5QMTWF0g8aGJoahBaAY8pzCSTRF7zXKBykEdKL/DpbD/T3wv2SC9A==}
     engines: {node: '>= 10.13.0'}
-    cpu: [arm, arm64]
 
   raspi-soft-pwm@6.0.2:
     resolution: {integrity: sha512-rftkopfH+K66hc0re1bvawj2MKpB7cA034bURZqd/qdRvuV8CUjFRxmDFR+7O7JJWpb2xdkUQtAMeLWA3VoCtQ==}
     engines: {node: '>= 6.4.0'}
-    cpu: [arm, arm64]
 
   raspi@6.0.1:
     resolution: {integrity: sha512-vv7P8QgUCC0wjN9aBGi7SKy7LClZSsIMSQyEE+GUVzImbX44OTftj3Vjo+Kbl2d+acmjBNNkEk/jnzXDZMcI5g==}
@@ -1071,28 +1068,28 @@ snapshots:
   '@esbuild/win32-x64@0.23.1':
     optional: true
 
-  '@roamhq/wrtc-darwin-arm64@0.8.0':
+  '@roamhq/wrtc-darwin-arm64@0.9.0':
     optional: true
 
-  '@roamhq/wrtc-darwin-x64@0.8.0':
+  '@roamhq/wrtc-darwin-x64@0.9.0':
     optional: true
 
-  '@roamhq/wrtc-linux-arm64@0.8.1':
+  '@roamhq/wrtc-linux-arm64@0.9.0':
     optional: true
 
-  '@roamhq/wrtc-linux-x64@0.8.1':
+  '@roamhq/wrtc-linux-x64@0.9.0':
     optional: true
 
-  '@roamhq/wrtc-win32-x64@0.8.0':
+  '@roamhq/wrtc-win32-x64@0.9.0':
     optional: true
 
-  '@roamhq/wrtc@0.8.0':
+  '@roamhq/wrtc@0.9.0':
     optionalDependencies:
-      '@roamhq/wrtc-darwin-arm64': 0.8.0
-      '@roamhq/wrtc-darwin-x64': 0.8.0
-      '@roamhq/wrtc-linux-arm64': 0.8.1
-      '@roamhq/wrtc-linux-x64': 0.8.1
-      '@roamhq/wrtc-win32-x64': 0.8.0
+      '@roamhq/wrtc-darwin-arm64': 0.9.0
+      '@roamhq/wrtc-darwin-x64': 0.9.0
+      '@roamhq/wrtc-linux-arm64': 0.9.0
+      '@roamhq/wrtc-linux-x64': 0.9.0
+      '@roamhq/wrtc-win32-x64': 0.9.0
       domexception: 4.0.0
 
   '@rollup/rollup-android-arm-eabi@4.24.0':

@@ -7,8 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start:client": "vite",
-    "start:server": "tsc src/server.ts && node --env-file=.env src/server.js",
-    "start:cam-server": "tsc src/cam-server.ts && node --env-file=.env src/cam-server.js"
+    "start:server": "tsx --env-file=.env src/server.js",
+    "start:cam-server": "tsc --noCheck src/frame-worker.ts && tsx --env-file=.env src/cam-server.ts"
   },
   "optionalDependencies": {
     "@roamhq/wrtc-linux-arm64": "^0.9.0",

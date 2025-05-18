@@ -6,68 +6,108 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WebRTC Robot Control Demo</title>
-  <style>
-    /* Add styles for video element and status indicator */
-    #videoElement {
-      width: 100%;
-      max-width: 640px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #f0f0f0;
-      margin-bottom: 20px;
-    }
-
-    #connectionStatus {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 4px;
-    }
-
-    .connected {
-      background-color: #d4edda;
-      color: #155724;
-    }
-
-    .connecting {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-
-    .disconnected {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-  </style>
 </head>
 
 <body>
   <header>
-    <h1>Remote Control Robot</h1>
-    <p>View and control your robot in real-time!</p>
+    <h1>WebRTC Robot Control Demo</h1>
+    <p>View and control your robot in real-time</p>
   </header>
 
   <div id="connectionStatus" class="disconnected">Disconnected</div>
 
-  <!-- Video display element -->
-  <video id="videoElement" autoplay playsinline
-    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='480' viewBox='0 0 640 480'%3E%3Crect width='640' height='480' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' fill='%23999' dominant-baseline='middle'%3EWaiting for video...%3C/text%3E%3C/svg%3E"></video>
 
-  <div class="controlbox">
-    <h2>Controls:</h2>
-    <form id="connectForm" data-action="connect" method="POST">
-      <button id="connectButton" name="connectButton" class="buttonleft">
-        Connect
-      </button>
-    </form>
+  <div class="control-section">
+    <h2>Connection Controls</h2>
+    <div class="form-row">
+      <div class="form-group" style="flex: 1;">
+        <form id="connectionForm" method="POST" data-action="connect">
+          <label for="ntfyTopic">Robot:</label>
+          <input type="text" id="ntfyTopic" name="ntfyTopic" placeholder="Enter robot name">
+          <button type="submit" id="connectButton">
+            Connect
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-section">
+    <h2>Robot Controls</h2>
     <form id="blinkForm" data-action="blink" method="POST">
-      <button id="blinkButton" name="blinkButton" class="buttonright" disabled>
+      <button id="blinkButton" name="blinkButton" disabled>
         Blink LED
       </button>
     </form>
   </div>
-  <div class="messagebox" id="receivebox">
-    <h2>Logs:</h2>
+
+  <div class="control-section">
+    <h2>Video Controls</h2>
+    <div class="form-row">
+      <form id="startVideoForm" data-action="startVideo" method="POST">
+        <button id="startVideoButton" name="startVideoButton" disabled>
+          Start Video
+        </button>
+      </form>
+      <form id="stopVideoForm" data-action="stopVideo" method="POST">
+        <button id="stopVideoButton" name="stopVideoButton" disabled>
+          Stop Video
+        </button>
+      </form>
+    </div>
+
+    <h3>Video Configuration</h3>
+    <form id="videoConfigForm" data-action="updateVideoConfig" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="resolutionSelect">Resolution:</label>
+          <select id="resolutionSelect" name="resolution">
+            <option value="320x240">320x240</option>
+            <option value="640x480">640x480</option>
+            <option value="800x600">800x600</option>
+            <option value="1280x720" selected>720p</option>
+            <option value="1920x1080">1080p</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="framerateInput">Framerate:</label>
+          <input type="number" id="framerateInput" name="framerate" min="1" max="60" value="30">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="frameSkipInput">Frame Skip:</label>
+          <input type="number" id="frameSkipInput" name="frameSkip" min="0" max="10" value="0">
+          <small>(0 = no skipping, 1 = every other frame, etc.)</small>
+        </div>
+
+        <div class="form-group">
+          <label for="qualitySelect">Quality:</label>
+          <select id="qualitySelect" name="quality">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high" selected>High</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" id="applyConfigButton" disabled>Apply Configuration</button>
+    </form>
   </div>
+  <video id="videoElement" autoplay playsinline
+    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3Crect width='800' height='450' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' fill='%23999' dominant-baseline='middle'%3EWaiting for video...%3C/text%3E%3C/svg%3E"></video>
+
+  <div class="messagebox" id="receivebox">
+    <h3>Logs:</h3>
+  </div>
+
+  <footer>
+    <p>WebRTC Robot Control Demo - <a href="https://github.com/hipsterbrown/webrtc-robot-demo" target="_blank">View on
+        GitHub</a></p>
+  </footer>
+
   <script type="module" src="/src/cam-client.ts"></script>
 </body>
 

@@ -3,18 +3,10 @@ import { JSONRPCServer, isJSONRPCRequest, isJSONRPCRequests } from 'json-rpc-2.0
 import * as five from 'johnny-five';
 // @ts-expect-error dependency only available on Raspberry Pi
 import { RaspiIO } from 'raspi-io';
-import { Notifier } from './lib/ntfy-signaling';
+import { Notifier, prepareMessage, parseMessage } from './lib/ntfy-signaling';
 import type { RPCServer } from './lib/rpc';
 
 const { RTCPeerConnection } = require('@roamhq/wrtc');
-
-function prepareMessage(message: Record<string, unknown>) {
-  return btoa(JSON.stringify(message));
-}
-
-function parseMessage(message: string) {
-  return JSON.parse(atob(message));
-}
 
 async function main() {
   const clientId = randomUUID();

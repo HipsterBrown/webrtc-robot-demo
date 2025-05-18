@@ -1,3 +1,48 @@
+video {
+  width: 100%;
+  max-width: 640px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+}
+
+#connectionStatus {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.connected {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.connecting {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.disconnected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.messagebox {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+footer {
+  border-top: 1px solid #dee2e6;
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+}
+
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   max-width: 1200px;
@@ -17,6 +62,7 @@ h3 {
   color: #333;
 }
 
+/* Connection status */
 #connectionStatus {
   margin: 10px 0;
   padding: 10px;
@@ -40,6 +86,7 @@ h3 {
   color: #721c24;
 }
 
+/* Video element styling */
 #videoElement {
   width: 100%;
   max-width: 800px;
@@ -51,6 +98,7 @@ h3 {
   margin: 0 auto 20px;
 }
 
+/* Control sections */
 .control-section {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
@@ -59,6 +107,7 @@ h3 {
   margin-bottom: 20px;
 }
 
+/* Button styling */
 button {
   padding: 10px 15px;
   background-color: #007bff;
@@ -80,6 +129,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/* Form styling */
 .form-group {
   margin-bottom: 15px;
 }
@@ -111,6 +161,7 @@ small {
   margin-top: 5px;
 }
 
+/* Log area */
 .messagebox {
   height: 300px;
   overflow-y: auto;
@@ -127,11 +178,4 @@ small {
   margin: 5px 0;
   word-wrap: break-word;
   white-space: pre-wrap;
-}
-
-footer {
-  border-top: 1px solid #dee2e6;
-  margin-top: 40px;
-  padding: 20px;
-  text-align: center;
 }

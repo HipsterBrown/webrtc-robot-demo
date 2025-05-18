@@ -1,3 +1,5 @@
+import pako from 'pako';
+
 export class Notifier extends EventTarget {
   server: string;
   defaultTopic: string;
@@ -59,5 +61,48 @@ export class Notifier extends EventTarget {
       this.subscriptions.delete(topic);
     }
 
+  }
+}
+
+export function prepareMessage(message: Record<string, unknown>): string {
+  try {
+    const jsonString = JSON.stringify(message);
+
+    if (jsonString.length > 1000) {
+      const compressed = pako.deflate(jsonString);
+
+      return 'c:' + btoa(String.fromCharCode.apply(null, compressed));
+    } else {
+      return 'u:' + btoa(jsonString);
+    }
+  } catch (error) {
+    console.error('Error compressing message:', error);
+    return 'u:' + btoa(JSON.stringify(message));
+  }
+}
+
+export function parseMessage(message: string): Record<string, unknown> {
+  try {
+    if (message.startsWith('c:')) {
+      const base64Data = message.substring(2);
+
+      const binary = atob(base64Data);
+
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      const decompressed = pako.inflate(bytes);
+
+      return JSON.parse(new TextDecoder().decode(decompressed));
+    } else if (message.startsWith('u:')) {
+      return JSON.parse(atob(message.substring(2)));
+    } else {
+      return JSON.parse(atob(message));
+    }
+  } catch (error) {
+    console.error('Error parsing message:', error);
+    throw error;
   }
 }

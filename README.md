@@ -35,12 +35,25 @@ Talk slides: https://www.canva.com/design/DAGUNkorRWU/86XFCkAuDHVtmn-7ulxGAg/vie
 1. Install project dependencies in project repo on your computer and Raspberry Pi (this may require `sudo` before the `npm install`): `cd webrtc-robot-demo && npm install`
 1. Make a copy of the `.env.example` file called `.env` on your computer and Raspberry Pi: `cp .env.example .env`
 1. Update the environment variables in the `.env` file as needed:
-    - `VITE_NTFY_TOPIC` should be a unique value to avoid conflicts with other ntfy.sh users, you can generate a name in [the app](https://ntfy.sh/app) through the "Subscribe to topic" modal (no account needed)
+    - `VITE_NTFY_TOPIC` should be a unique value to avoid conflicts with other ntfy.sh users, you can generate a name in [the app](https://ntfy.sh/app) through the "Subscribe to topic" modal (no account needed). Remember this value because it will be needed to connect to the Pi from the web app.
 1. Start the web application server on your computer: `npm run start:client`
 1. Start the robot server on the Raspberry Pi: `sudo npm run start:server`
 
-When the robot server is ready, you will see the message "Robot server is ready and online!" logged to the console on the Raspberry Pi. When it is ready, click on the "Connect" button in the web application to create a WebRTC peer connection with the robot server.
+When the robot server is ready, you will see the message "Robot server is ready and online!" logged to the console on the Raspberry Pi.
+When it is ready, enter the topic name in the "Robot" field and click on the "Connect" button in the web application to create a WebRTC peer connection with the robot server.
 If the connection is successful, the "Blink LED" button will be activated. Clicking that button should make the LED wired to the Raspberry Pi start to blink.
+
+**For the camera streaming demo (`cam.html`):**
+
+1. Connect any USB webcam to the Raspberry Pi
+1. Make sure ffmpeg is installed on the Pi: `sudo apt install -y ffmpeg`
+1. Start the web application the same way: `npm run start:client`
+1. Add `cam.html` to the dev server URL to visit the demo page.
+1. Start the robot server on the Raspberry Pi: `sudo npm run start:cam-server`
+
+When the robot server is ready, you will see the message "Robot server is ready and online! Video will start on client request" logged to the console on the Raspberry Pi. When it is ready, click on the "Connect" button in the web application to create a WebRTC peer connection with the robot server.
+When it is ready, enter the topic name in the "Robot" field and click on the "Connect" button in the web application to create a WebRTC peer connection with the robot server.
+If the connection is successful, the "Blink LED" button will be activated. Clicking that button should make the LED wired to the Raspberry Pi start to blink. Click "Start video" will start streaming the video from the webcam at the default settings.
 
 
 ## License

@@ -1,19 +1,13 @@
 import './style.css'
 import { JSONRPCClient, isJSONRPCResponse, isJSONRPCResponses } from 'json-rpc-2.0';
-import { Notifier } from './lib/ntfy-signaling';
+import { Notifier, prepareMessage, parseMessage } from './lib/ntfy-signaling';
 import type { RPCCLient } from './lib/rpc';
 
 declare global {
   var receivebox: HTMLDivElement;
   var blinkButton: HTMLButtonElement;
-}
-
-function prepareMessage(message: Record<string, unknown>) {
-  return btoa(JSON.stringify(message));
-}
-
-function parseMessage(message: string) {
-  return JSON.parse(atob(message));
+  var connectButton: HTMLButtonElement;
+  var connectionStatus: HTMLDivElement;
 }
 
 function logMessage(label: string, ...args: any[]) {
@@ -23,21 +17,28 @@ function logMessage(label: string, ...args: any[]) {
   globalThis.receivebox.appendChild(nextMessage);
 }
 
+function updateStatus(state: string, message: string) {
+  globalThis.connectionStatus.textContent = message;
+  globalThis.connectionStatus.className = state;
+}
+
 function main() {
   const clientId = crypto.randomUUID()
-  const peerConnection = new RTCPeerConnection({
+  let peerConnection = new RTCPeerConnection({
     iceServers: [
       {
         urls: "stun:stun.relay.metered.ca:80"
       },
     ]
   });
+  let isConnected = false;
   let remoteSetResolver: (value: unknown) => void;
   const remoteDescriptSet = new Promise((resolve) => {
     remoteSetResolver = resolve;
   })
+  let robotTopic = import.meta.env.VITE_NTFY_TOPIC;
 
-  const notifier = new Notifier({ server: import.meta.env.VITE_NTFY_SERVER, defaultTopic: import.meta.env.VITE_NTFY_TOPIC });
+  const notifier = new Notifier({ server: import.meta.env.VITE_NTFY_SERVER, defaultTopic: robotTopic });
   notifier.addEventListener('close', console.log.bind(console, 'Notifications closed'));
   notifier.addEventListener('message', async (event: CustomEvent) => {
     try {
@@ -52,42 +53,66 @@ function main() {
 
       if (message.type === 'offer') {
         console.log('Offer:', { message })
-        console.log('Recevied offer, signaling state before setRemoteDescription', peerConnection.signalingState)
+        logMessage('Received offer', { signalingState: peerConnection.signalingState });
+
         await peerConnection.setRemoteDescription(message);
         remoteSetResolver(true);
+
+        logMessage('Set remote description', { signalingState: peerConnection.signalingState });
+
         console.log('Recevied offer, signaling state after setRemoteDescription, before createAnswer', peerConnection.signalingState)
         const answer = await peerConnection.createAnswer();
-        console.log('Recevied offer, signaling state after createAnswer, before setLocalDescription', peerConnection.signalingState)
+        logMessage('Created answer', { signalingState: peerConnection.signalingState });
+
         await peerConnection.setLocalDescription(answer);
-        console.log('Recevied offer, signaling state after createAnswer, after setLocalDescription', peerConnection.signalingState)
-        await notifier.publish(prepareMessage({ clientId, ...peerConnection.localDescription?.toJSON() }))
+        logMessage('Set local description', { signalingState: peerConnection.signalingState });
+
+        await notifier.publish(prepareMessage({ clientId, ...peerConnection.localDescription?.toJSON() }), robotTopic)
         console.log(peerConnection.connectionState, peerConnection.iceConnectionState)
       }
 
       if (message.type === 'answer') {
         console.log('Answer:', { message })
-        console.log('Recevied answer, signaling state before setRemoteDescription', peerConnection.signalingState)
+        logMessage('Received answer', { signalingState: peerConnection.signalingState });
+
         await peerConnection.setRemoteDescription(message);
         remoteSetResolver(true);
+
+        logMessage('Set remote description (answer)', {
+          signalingState: peerConnection.signalingState,
+          connectionState: peerConnection.connectionState
+        });
       }
     } catch (error) {
       console.error('Unable to parse message', event.detail, error);
     }
   });
 
-  notifier.subscribe().catch(console.error);
-
   peerConnection.addEventListener('icecandidate', ({ candidate }) => {
     logMessage('ICE candidate', { candidate });
     if (candidate) {
-      notifier.publish(prepareMessage({ clientId, ...candidate?.toJSON() })).catch(console.error);
+      notifier.publish(prepareMessage({ clientId, ...candidate?.toJSON() }), robotTopic).catch(console.error);
     }
   })
 
   peerConnection.addEventListener('datachannel', event => logMessage('datachannel', event));
 
   peerConnection.addEventListener('negotiationneeded', event => logMessage('Negotiation needed', event));
-  peerConnection.addEventListener('connectionstatechange', () => logMessage('Connection state changed', peerConnection.connectionState));
+  peerConnection.addEventListener('connectionstatechange', () => {
+    logMessage('Connection state changed', peerConnection.connectionState)
+
+    isConnected = peerConnection.connectionState === 'connected';
+
+    if (isConnected) {
+      updateStatus('connected', 'Connected to robot');
+      globalThis.connectButton.setAttribute('disabled', 'true')
+    } else if (peerConnection.connectionState === 'disconnected' ||
+      peerConnection.connectionState === 'failed' ||
+      peerConnection.connectionState === 'closed') {
+      updateStatus('disconnected', 'Connection lost');
+      globalThis.connectButton.removeAttribute('disabled')
+    }
+  });
   peerConnection.addEventListener('signalingstatechange', () => logMessage('Signaling state changed', peerConnection.signalingState));
   peerConnection.addEventListener('icegatheringstatechange', () => logMessage('ICE gathering state changed', peerConnection.iceGatheringState));
   peerConnection.addEventListener('iceconnectionstatechange', () => logMessage('ICE connection state changed', peerConnection.iceConnectionState));
@@ -103,11 +128,14 @@ function main() {
 
   dataChannel.addEventListener('open', event => {
     logMessage('Data channel open', { event });
+    isConnected = true;
+    updateStatus('connected', 'Connected to robot w/ data channel open')
     globalThis.blinkButton.removeAttribute('disabled');
   })
   dataChannel.addEventListener('close', event => {
     logMessage('Data channel closed', { event });
     globalThis.blinkButton.setAttribute('disabled', 'true');
+    isConnected = false;
   })
   dataChannel.addEventListener('message', ({ data }) => {
     logMessage('Data channel message', { data });
@@ -121,11 +149,18 @@ function main() {
     }
   })
 
-  async function connectPeers() {
-    const offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer)
+  async function connectPeers(topic: string) {
+    robotTopic = topic
+    notifier.subscribe(robotTopic).catch(console.error);
+    updateStatus('connecting', 'Connecting to robot...');
 
-    await notifier.publish(prepareMessage({ clientId, ...peerConnection.localDescription?.toJSON() }))
+    const offer = await peerConnection.createOffer();
+    logMessage('Created offer', { sdp: offer.sdp });
+    await peerConnection.setLocalDescription(offer)
+    logMessage('Set local description (offer)');
+
+    await notifier.publish(prepareMessage({ clientId, ...peerConnection.localDescription?.toJSON() }), robotTopic)
+    logMessage('Sent offer to server');
   }
 
   document.addEventListener("submit", function(event) {
@@ -135,7 +170,7 @@ function main() {
 
     switch (action) {
       case 'connect':
-        connectPeers().catch(console.error);
+        connectPeers(form.elements.ntfyTopic.value.trim()).catch(console.error);
         break;
       case 'disconnect':
         break;
